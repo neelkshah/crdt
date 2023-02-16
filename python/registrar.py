@@ -8,7 +8,7 @@ hostregister = dict()
 
 @app.route('/register', methods=['POST'])
 def register():
-    othercounter = Registration(**json.loads(request.json))
+    othercounter = Registration(**json.loads(str(request.json)))
     hostregister[othercounter.id] = othercounter.host
     return Response("{'"+othercounter.id+"':'"+othercounter.host+"'}", status=201, mimetype='application/json')
 

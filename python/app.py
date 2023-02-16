@@ -6,6 +6,7 @@ import time
 import os
 import datetime
 import sys
+import random
 
 app = Flask(__name__)
 
@@ -14,6 +15,9 @@ gcounter = GCounter("")
 
 def heartbeat():
     while True:
+        randomnum = random.randint(1, 20)
+        if randomnum == 1:
+            return
         f = open("C:\\Users\\neelshah\\Desktop\\crdt.log", "a")
         f.write(str(os.getpid()) + " : " +
                 str(datetime.datetime.now()) + " : Refreshing all hosts.\n")
@@ -49,14 +53,14 @@ def incrementgcounter():
 
 @app.route('/merge', methods=['POST'])
 def merge():
-    othercounter = json.loads(request.json)
+    othercounter = json.loads(str(request.json))
     gcounter.merge(othercounter)
     return str(gcounter.view())
 
 
 @app.route('/ping', methods=['POST'])
 def ping():
-    othercounter = str(json.loads(request.json))
+    othercounter = str(json.loads(str(request.json)))
     gcounter.merge(othercounter)
     return str(gcounter.view())
 
